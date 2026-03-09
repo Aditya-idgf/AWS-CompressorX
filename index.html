@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompressX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen w-screen flex flex-col items-center justify-center bg-cyan-50 relative p-4">
+    
+    <h1 class="text-5xl md:text-8xl font-bold text-sky-900 absolute top-8 md:top-20">CompressX</h1>
+    
+    <div class="mt-24 md:mt-0 m-4 md:m-10 w-full max-w-md bg-gradient-to-tr from-blue-100 to-cyan-400 p-2 rounded-lg hover:shadow-lg hover:shadow-cyan-600/60 transition ease-in-out duration-300" id="wrapper">
+        <div class="p-5 flex items-center justify-center bg-transparent rounded-md backdrop-blur-2xl">
+            <label for="imageInput" class="cursor-pointer flex flex-col items-center">
+                <svg class="w-14 h-14 text-sky-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 4v12m0-12l-4 4m4-4l4 4"/>
+                </svg>
+                <p class="mt-2 font-bold text-gray-600 italic text-center">Click to Upload</p>
+            </label>
+            <input type="file" id="imageInput" accept="image/*" class="hidden">
+        </div>
+    </div>
+
+    <div id="previewContainer" class="w-full max-w-md flex justify-center px-4"></div>
+
+    <div id="sizeSelector" class="hidden mt-4 flex items-center justify-center w-full">
+        <label class="font-bold text-sky-900 mr-2">Target Size:</label>
+        <select id="targetSize" class="p-2 rounded-md border border-cyan-400 bg-white">
+            <option value="100KB">100 KB</option>
+            <option value="500KB" selected>500 KB</option>
+            <option value="1MB">1 MB</option>
+            <option value="2MB">2 MB</option>
+        </select>
+    </div>
+
+    <div id="actionButtons" class="w-full max-w-md flex flex-col sm:flex-row justify-center gap-4 mt-6 hidden px-4">
+        <button id="submitBtn" class="w-full sm:w-auto bg-gradient-to-tr from-blue-100 to-cyan-200 p-3 px-6 rounded-md cursor-pointer font-semibold text-sky-900 hover:shadow-md transition">Compress & Download</button>
+        <button id="removeBtn" class="w-full sm:w-auto bg-gradient-to-tr from-red-100 to-rose-200 p-3 px-6 rounded-md cursor-pointer font-semibold text-red-900 hover:shadow-md transition">Remove</button>
+    </div>
+    
+    <p id="statusText" class="mt-4 font-bold text-sky-700 hidden text-center px-4">Uploading and compressing... please wait...</p>
+
+</body>
+
+<script>
+    const input = document.getElementById("imageInput");
+    const wrapper = document.getElementById('wrapper');
+    const previewContainer = document.getElementById('previewContainer');
+    const actionButtons = document.getElementById('actionButtons');
+    const sizeSelector = document.getElementById('sizeSelector');
+    const submitBtn = document.getElementById('submitBtn');
+    const removeBtn = document.getElementById('removeBtn');
+    const statusText = document.getElementById('statusText');
+
+    let currentFile = null;
+
+    input.addEventListener('change', () => {
+        if (!input.files || input.files.length === 0) return;
+        currentFile = input.files[0];
+        
+        wrapper.classList.add('hidden');
+
+        const imageElement = document.createElement('img');
+        imageElement.src = URL.createObjectURL(currentFile);
+        
+        // Updated classes: max-w-full prevents horizontal scrolling on phones
+        imageElement.className = "max-h-64 w-auto max-w-full rounded-lg mt-5 border border-slate-500 shadow-lg object-contain";
+        previewContainer.appendChild(imageElement);
+
+        actionButtons.classList.remove('hidden');
+        sizeSelector.classList.remove('hidden');
+    });
+
+    removeBtn.addEventListener('click', () => {
+        previewContainer.innerHTML = '';
+        input.value = '';
+        currentFile = null;
+
+        actionButtons.classList.add('hidden');
+        sizeSelector.classList.add('hidden');
+        wrapper.classList.remove('hidden');
+        statusText.classList.add('hidden');
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Compress & Download";
+    });
+
+    submitBtn.addEventListener('click', async () => {
+        if (!currentFile) return;
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Processing...";
+        statusText.classList.remove('hidden');
+
+        const formData = new FormData();
+        formData.append('image', currentFile);
+        formData.append('size', document.getElementById('targetSize').value);
+
+        try {
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            if (data.download_url) {
+                statusText.innerText = "Done! Downloading now...";
+                statusText.classList.replace('text-sky-700', 'text-green-600');
+                
+                const a = document.createElement('a');
+                a.href = data.download_url;
+                a.click();
+            } else {
+                statusText.innerText = "Error: " + data.error;
+                statusText.classList.replace('text-sky-700', 'text-red-600');
+            }
+        } catch (error) {
+            statusText.innerText = "An error occurred during upload.";
+        }
+    });
+</script>
+</html>
