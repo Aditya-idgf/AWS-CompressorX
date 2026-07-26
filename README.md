@@ -1,10 +1,10 @@
-# 🚀 CompressX – Event-Driven Cloud Image Compression
+# CompressX – Event-Driven Cloud Image Compression
 
 CompressX is a **highly scalable, fully decoupled cloud application** that compresses images to exact target file sizes using a **custom binary-search quality algorithm**. Built entirely on **AWS**, the system leverages an **event-driven architecture** so that the web server remains fast and responsive while a dedicated worker node handles the computationally intensive image compression tasks in the background.
 
 ---
 
-# ✨ Features
+# Features
 
 ### Target-Size Compression
 
@@ -29,7 +29,7 @@ A **modern interface built with Tailwind CSS**, optimized for both desktop and m
 
 ---
 
-# 🛠️ Tech Stack
+# Tech Stack
 
 ## Frontend
 
@@ -80,7 +80,7 @@ Implements **least-privilege role-based access control** for all services.
 
 ---
 
-# 🏗️ Architecture Flow
+# Architecture Flow
 
 1. **Upload**
 
@@ -116,7 +116,7 @@ Implements **least-privilege role-based access control** for all services.
 
 ---
 
-# ⚙️ The Compression Algorithm
+# The Compression Algorithm
 
 Traditional compression tools rely on a **static quality percentage**, which often produces inconsistent file sizes.
 
@@ -215,7 +215,7 @@ Ensure **port 5000** is open in the EC2 **Security Group**.
 
 ---
 
-# 🔮 Future Enhancements
+# Future Enhancements
 
 ### Custom Domain
 
@@ -234,7 +234,7 @@ Configure **S3 Lifecycle Rules** to automatically delete original images after *
 
 ---
 
-# 📌 Project Summary
+# Project Summary
 
 CompressX demonstrates how **event-driven cloud architecture** can be used to build scalable backend systems. By combining **AWS S3, Lambda, EC2, and Systems Manager**, the application achieves:
 
