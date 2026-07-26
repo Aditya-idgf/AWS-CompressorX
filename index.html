@@ -1,122 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CompressX</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>CompressX | Precision Optics for the Web</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="style.css" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-background": "#e5e2e1",
+              "secondary-fixed": "#d8e2ff",
+              "on-primary-container": "#00285d",
+              "surface-tint": "#adc6ff",
+              "on-primary-fixed-variant": "#004395",
+              "surface-container-highest": "#353534",
+              "on-error": "#690005",
+              "secondary-container": "#304671",
+              "secondary-fixed-dim": "#b1c6f9",
+              "on-primary": "#002e6a",
+              "on-surface-variant": "#c2c6d6",
+              "on-secondary-fixed-variant": "#304671",
+              "primary-fixed-dim": "#adc6ff",
+              "tertiary-fixed-dim": "#ffb786",
+              "background": "#131313",
+              "on-tertiary-container": "#461f00",
+              "outline-variant": "#424754",
+              "tertiary": "#ffb786",
+              "on-tertiary-fixed": "#311400",
+              "primary": "#adc6ff",
+              "on-secondary": "#182f59",
+              "inverse-primary": "#005ac2",
+              "on-tertiary-fixed-variant": "#723600",
+              "tertiary-container": "#df7412",
+              "surface": "#131313",
+              "error-container": "#93000a",
+              "outline": "#8c909f",
+              "on-secondary-fixed": "#001a42",
+              "inverse-on-surface": "#313030",
+              "error": "#ffb4ab",
+              "primary-container": "#4d8eff",
+              "surface-container-high": "#2a2a2a",
+              "on-error-container": "#ffdad6",
+              "on-primary-fixed": "#001a42",
+              "surface-dim": "#131313",
+              "tertiary-fixed": "#ffdcc6",
+              "secondary": "#b1c6f9",
+              "surface-container": "#201f1f",
+              "surface-container-lowest": "#0e0e0e",
+              "inverse-surface": "#e5e2e1",
+              "on-tertiary": "#502400",
+              "on-surface": "#e5e2e1",
+              "surface-bright": "#393939",
+              "on-secondary-container": "#9fb5e7",
+              "primary-fixed": "#d8e2ff",
+              "surface-container-low": "#1c1b1b",
+              "surface-variant": "#353534"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
 </head>
-<body class="min-h-screen w-screen flex flex-col items-center justify-center bg-cyan-50 relative p-4">
+<body class="font-body text-on-surface selection:bg-primary selection:text-on-primary bg-[#0E0E0E]">
+
+    <nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl dark:bg-[#131313]/60 shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-8 h-20 max-w-[1440px] mx-auto">
+<div class="text-xl font-black text-slate-900 dark:text-white tracking-tighter font-headline">CompressX</div>
+<div class="hidden md:flex items-center gap-8 font-['Manrope'] font-bold tracking-tight text-sm">
+<a class="text-slate-900 dark:text-white border-b-2 border-blue-500 hover:text-blue-500 dark:hover:text-[#3B82F6] transition-colors" href="index.html">How it Works</a>
+<a class="text-slate-500 dark:text-[#A1A1A1] hover:text-blue-500 dark:hover:text-[#3B82F6] transition-colors" href="index.html">API</a>
+<a class="text-slate-500 dark:text-[#A1A1A1] hover:text-blue-500 dark:hover:text-[#3B82F6] transition-colors" href="index.html">Pricing</a>
+</div>
+<button class="bg-primary-container text-on-primary-container px-6 py-2.5 rounded-lg font-bold text-sm hover:opacity-90 active:scale-95 duration-150 transition-all">
+                Get Started
+            </button>
+</div>
+<!-- Separation Logic -->
+<div class="h-[1px] w-full bg-slate-200/20 dark:bg-white/5"></div>
+</nav>
+
+    <div id="app-root"></div>
     
-    <h1 class="text-5xl md:text-8xl font-bold text-sky-900 absolute top-8 md:top-20">CompressX</h1>
-    
-    <div class="mt-24 md:mt-0 m-4 md:m-10 w-full max-w-md bg-gradient-to-tr from-blue-100 to-cyan-400 p-2 rounded-lg hover:shadow-lg hover:shadow-cyan-600/60 transition ease-in-out duration-300" id="wrapper">
-        <div class="p-5 flex items-center justify-center bg-transparent rounded-md backdrop-blur-2xl">
-            <label for="imageInput" class="cursor-pointer flex flex-col items-center">
-                <svg class="w-14 h-14 text-sky-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 4v12m0-12l-4 4m4-4l4 4"/>
-                </svg>
-                <p class="mt-2 font-bold text-gray-600 italic text-center">Click to Upload</p>
-            </label>
-            <input type="file" id="imageInput" accept="image/*" class="hidden">
+    <div id="upload-modal" class="fixed inset-0 z-[60] bg-surface-container-lowest/80 flex items-center justify-center p-6 opacity-0 invisible transition-all duration-300 [&.active]:opacity-100 [&.active]:visible">
+        <div class="glass-panel w-full max-w-2xl rounded-xl overflow-hidden flex flex-col shadow-2xl relative border border-outline-variant/10">
+            <button id="close-modal" class="absolute top-6 right-6 text-on-surface-variant hover:text-on-surface transition-colors p-2 rounded-full hover:bg-white/5">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="p-8 pb-4">
+                <h2 class="text-2xl font-bold font-headline tracking-tight text-white">Upload Assets</h2>
+                <p class="text-on-surface-variant text-sm mt-1">Select high-resolution images for batch processing.</p>
+            </div>
+            <div class="px-8 pb-8 flex-1">
+                <div class="relative group">
+                    <div id="modal-drop-zone" class="ghost-border bg-surface-container-low/40 rounded-lg p-12 flex flex-col items-center justify-center transition-all duration-300 cursor-pointer">
+                        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-4xl">cloud_upload</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-on-surface mb-2 font-headline">Drop files here or click to upload</h3>
+                        <p class="text-on-surface-variant text-sm font-label uppercase tracking-widest mb-8">Raw, JPEG, PNG, WebP supported</p>
+                        <button class="bg-primary text-on-primary px-8 py-3 rounded-md font-bold tracking-tight text-sm uppercase transition-transform active:scale-95 shadow-[0_0_15px_rgba(173,198,255,0.3)]">
+                            Select Files
+                        </button>
+                    </div>
+                </div>
+                <!-- ... other modal content ... -->
+            </div>
         </div>
     </div>
 
-    <div id="previewContainer" class="w-full max-w-md flex justify-center px-4"></div>
+    <footer class="bg-[#0E0E0E] w-full py-20 px-8 border-t border-white/5">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-[1440px] mx-auto">
+<div class="space-y-6">
+<div class="text-lg font-bold text-white font-headline">CompressX</div>
+<p class="text-[#A1A1A1] max-w-xs text-sm leading-relaxed">
+                    Precision engineering for digital assets. Helping teams deliver high-performance visual experiences since 2024.
+                </p>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="flex flex-col gap-4">
+<h4 class="font-['Inter'] text-xs tracking-wide uppercase text-white font-bold">Product</h4>
+<a class="text-[#A1A1A1] text-sm hover:text-white transition-opacity" href="#">Documentation</a>
+<a class="text-[#A1A1A1] text-sm hover:text-white transition-opacity" href="#">Github</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-['Inter'] text-xs tracking-wide uppercase text-white font-bold">Legal</h4>
+<a class="text-[#A1A1A1] text-sm hover:text-white transition-opacity" href="#">Privacy Policy</a>
+<a class="text-[#A1A1A1] text-sm hover:text-white transition-opacity" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+<div class="max-w-[1440px] mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="font-['Inter'] text-xs tracking-wide uppercase text-[#A1A1A1]">
+                © 2024 CompressX. Precision Optics for the Web.
+            </div>
+<div class="flex gap-6">
+<span class="material-symbols-outlined text-[#A1A1A1] hover:text-primary cursor-pointer transition-colors" data-icon="language">language</span>
+<span class="material-symbols-outlined text-[#A1A1A1] hover:text-primary cursor-pointer transition-colors" data-icon="terminal">terminal</span>
+</div>
+</div>
+</footer>
 
-    <div id="sizeSelector" class="hidden mt-4 flex items-center justify-center w-full">
-        <label class="font-bold text-sky-900 mr-2">Target Size:</label>
-        <select id="targetSize" class="p-2 rounded-md border border-cyan-400 bg-white">
-            <option value="100KB">100 KB</option>
-            <option value="500KB" selected>500 KB</option>
-            <option value="1MB">1 MB</option>
-            <option value="2MB">2 MB</option>
-        </select>
-    </div>
-
-    <div id="actionButtons" class="w-full max-w-md flex flex-col sm:flex-row justify-center gap-4 mt-6 hidden px-4">
-        <button id="submitBtn" class="w-full sm:w-auto bg-gradient-to-tr from-blue-100 to-cyan-200 p-3 px-6 rounded-md cursor-pointer font-semibold text-sky-900 hover:shadow-md transition">Compress & Download</button>
-        <button id="removeBtn" class="w-full sm:w-auto bg-gradient-to-tr from-red-100 to-rose-200 p-3 px-6 rounded-md cursor-pointer font-semibold text-red-900 hover:shadow-md transition">Remove</button>
-    </div>
-    
-    <p id="statusText" class="mt-4 font-bold text-sky-700 hidden text-center px-4">Uploading and compressing... please wait...</p>
-
+    <input type="file" id="main-file-input" multiple accept="image/*" class="hidden" />
+    <script src="script.js"></script>
 </body>
-
-<script>
-    const input = document.getElementById("imageInput");
-    const wrapper = document.getElementById('wrapper');
-    const previewContainer = document.getElementById('previewContainer');
-    const actionButtons = document.getElementById('actionButtons');
-    const sizeSelector = document.getElementById('sizeSelector');
-    const submitBtn = document.getElementById('submitBtn');
-    const removeBtn = document.getElementById('removeBtn');
-    const statusText = document.getElementById('statusText');
-
-    let currentFile = null;
-
-    input.addEventListener('change', () => {
-        if (!input.files || input.files.length === 0) return;
-        currentFile = input.files[0];
-        
-        wrapper.classList.add('hidden');
-
-        const imageElement = document.createElement('img');
-        imageElement.src = URL.createObjectURL(currentFile);
-        
-        // Updated classes: max-w-full prevents horizontal scrolling on phones
-        imageElement.className = "max-h-64 w-auto max-w-full rounded-lg mt-5 border border-slate-500 shadow-lg object-contain";
-        previewContainer.appendChild(imageElement);
-
-        actionButtons.classList.remove('hidden');
-        sizeSelector.classList.remove('hidden');
-    });
-
-    removeBtn.addEventListener('click', () => {
-        previewContainer.innerHTML = '';
-        input.value = '';
-        currentFile = null;
-
-        actionButtons.classList.add('hidden');
-        sizeSelector.classList.add('hidden');
-        wrapper.classList.remove('hidden');
-        statusText.classList.add('hidden');
-        submitBtn.disabled = false;
-        submitBtn.innerText = "Compress & Download";
-    });
-
-    submitBtn.addEventListener('click', async () => {
-        if (!currentFile) return;
-
-        submitBtn.disabled = true;
-        submitBtn.innerText = "Processing...";
-        statusText.classList.remove('hidden');
-
-        const formData = new FormData();
-        formData.append('image', currentFile);
-        formData.append('size', document.getElementById('targetSize').value);
-
-        try {
-            const response = await fetch('/upload', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await response.json();
-
-            if (data.download_url) {
-                statusText.innerText = "Done! Downloading now...";
-                statusText.classList.replace('text-sky-700', 'text-green-600');
-                
-                const a = document.createElement('a');
-                a.href = data.download_url;
-                a.click();
-            } else {
-                statusText.innerText = "Error: " + data.error;
-                statusText.classList.replace('text-sky-700', 'text-red-600');
-            }
-        } catch (error) {
-            statusText.innerText = "An error occurred during upload.";
-        }
-    });
-</script>
 </html>

@@ -1,0 +1,139 @@
+<!-- Queue Screen Partial -->
+<style>
+  /* Removing standard arrows for number input */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+  
+  /* Range Slider Styling */
+  input[type=range] {
+    -webkit-appearance: none;
+    background: transparent;
+  }
+  input[type=range]:focus {
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: #2a2a2a;
+    border-radius: 3px;
+    transition: background 0.3s;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: #4d8eff; /* primary container color matching index */
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -6px;
+    box-shadow: 0 0 10px rgba(77, 142, 255, 0.4);
+  }
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #353534;
+  }
+</style>
+
+<main id="screen-queue" class="screen active pt-32 pb-20 px-4 md:px-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Section -->
+    <div class="mb-12">
+      <span class="font-label text-xs tracking-[0.2em] uppercase text-on-surface-variant font-semibold mb-3 block">Process Queue</span>
+      <h1 class="font-headline text-4xl md:text-5xl font-extrabold tracking-tighter text-on-surface mb-4">Ready to Compress</h1>
+      <p class="text-on-surface-variant text-lg max-w-xl">Review your selected files before precision optimization. Adjust settings or add more assets to the batch.</p>
+    </div>
+
+    <!-- Main Queue Container -->
+    <div class="glass-panel rounded-xl overflow-hidden mb-8">
+      
+      <!-- List Header -->
+      <div class="grid grid-cols-12 px-6 py-4 bg-surface-container-low/50 border-b border-outline-variant/10 font-label text-[10px] tracking-widest uppercase text-on-surface-variant font-bold">
+        <div class="col-span-6 md:col-span-7">File Details</div>
+        <div class="col-span-4 md:col-span-3 text-right">Original Size</div>
+        <div class="col-span-2 md:col-span-2 text-right">Actions</div>
+      </div>
+      
+      <!-- File List Items -->
+      <div id="queue-list-container" class="divide-y divide-outline-variant/10">
+        <!-- Rendered dynamically -->
+      </div>
+      
+      <!-- Target File Size Configuration Section -->
+      <div class="px-6 py-8 border-t border-outline-variant/10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          
+          <!-- Slider Control -->
+          <div class="flex flex-col gap-4">
+            <div class="flex justify-between items-center">
+              <label class="font-label text-xs tracking-widest uppercase text-on-surface-variant font-bold">Target File Size</label>
+              <span id="targetSizeLabel" class="text-primary-container font-headline font-bold text-sm">~ 1.0 MB</span>
+            </div>
+            <div class="relative pt-2">
+              <input id="sizeSlider" class="w-full h-1.5 bg-surface-container-high rounded-lg appearance-none cursor-pointer accent-primary-container" max="28" min="0" step="1" type="range" value="19"/>
+              <div class="flex justify-between mt-4">
+                <span class="font-label text-[10px] text-on-surface-variant font-medium">10 KB</span>
+                <span class="font-label text-[10px] text-on-surface-variant font-medium">100 KB</span>
+                <span class="font-label text-[10px] text-on-surface-variant font-medium">1 MB</span>
+                <span class="font-label text-[10px] text-on-surface-variant font-medium">10 MB</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Manual Entry Control -->
+          <div class="flex flex-col gap-4">
+            <label class="font-label text-xs tracking-widest uppercase text-on-surface-variant font-bold">Manual Entry</label>
+            <div class="flex items-center gap-0">
+              <input id="manualSizeInput" class="flex-1 bg-surface-container-high/50 border border-outline-variant/20 rounded-l-lg py-3 px-4 text-on-surface font-headline font-bold focus:outline-none focus:border-primary-container/50 transition-colors" type="number" value="1"/>
+              <div class="flex bg-surface-container-low border border-l-0 border-outline-variant/20 rounded-r-lg overflow-hidden h-[50px]">
+                <button id="unitToggleBtn_KB" class="px-4 text-[10px] font-bold tracking-widest text-on-surface-variant hover:text-on-surface transition-colors border-r border-outline-variant/10 uppercase">KB</button>
+                <button id="unitToggleBtn_MB" class="px-4 text-[10px] font-bold tracking-widest text-primary-container bg-primary-container/10 uppercase">MB</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Summary Area -->
+      <div class="px-6 py-6 bg-surface-container-low/30 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-outline-variant/10">
+        <div class="flex items-center gap-8">
+          <div>
+            <p class="font-label text-[10px] tracking-widest uppercase text-on-surface-variant mb-1">Total Files</p>
+            <p id="queue-total-files" class="font-headline text-xl font-bold">0 Assets</p>
+          </div>
+          <div class="w-[1px] h-8 bg-outline-variant/20"></div>
+          <div>
+            <p class="font-label text-[10px] tracking-widest uppercase text-on-surface-variant mb-1">Queue Size</p>
+            <p id="queue-total-size" class="font-headline text-xl font-bold">0 MB</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 w-full md:w-auto">
+          <button id="add-more-btn" class="flex-1 md:flex-none px-6 py-3 font-label text-xs font-bold uppercase tracking-widest text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-sm">add</span>
+            Add More Files
+          </button>
+          <button id="start-compression-btn" class="flex-1 md:flex-none bg-primary-container text-on-primary-container font-headline font-extrabold px-8 py-3 rounded-lg hover:shadow-[0_0_20px_rgba(77,142,255,0.3)] transition-all active:scale-95 flex items-center justify-center gap-3">
+            Start Compression
+            <span class="material-symbols-outlined">bolt</span>
+          </button>
+        </div>
+      </div>
+    
+    </div>
+
+    <!-- Hint/Status Card -->
+    <div class="flex items-start gap-4 p-4 rounded-lg bg-primary-container/10 border border-primary-container/20">
+      <span class="material-symbols-outlined text-primary-container mt-0.5">info</span>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        All images will be processed using our <span class="text-primary-container font-medium">Precision Lens</span> algorithm, targeting a 75% reduction in file size without perceptible loss in visual fidelity.
+      </p>
+    </div>
+
+  </div>
+</main>
