@@ -134,7 +134,7 @@ This guarantees the **highest possible visual fidelity** for the requested file 
 
 ---
 
-# 🚀 Setup & Deployment
+# Setup & Deployment
 
 ## 1. AWS IAM Requirements
 
